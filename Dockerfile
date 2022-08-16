@@ -8,7 +8,7 @@ RUN npm install
 
 COPY ./ ./
 
-ENV SERVER_PORT=6464
+ENV NODE_ENV=production
 
 RUN npm run build
 
