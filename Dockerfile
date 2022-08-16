@@ -8,6 +8,8 @@ RUN npm install
 
 COPY ./ ./
 
+ENV SERVER_PORT=6464
+
 RUN npm run build
 
 CMD ["npm", "run", "start:prod"]
