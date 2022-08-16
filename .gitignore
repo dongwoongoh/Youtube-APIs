@@ -6,9 +6,6 @@
 .env.development
 .env.production
 
-# Dockerfile
-/Dockerfile
-
 # Logs
 logs
 *.log
