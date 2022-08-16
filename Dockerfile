@@ -4,9 +4,7 @@ WORKDIR /app/server
 
 COPY package*.json ./
 
-RUN npm ci
-
-RUN rm -rf ./dist || true
+RUN npm install
 
 RUN npm run build
 
