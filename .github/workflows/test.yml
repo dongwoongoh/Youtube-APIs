@@ -55,7 +55,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.TEST }}
       - name: Docker run
-        uses: isbang/compose-action@v1.1.0
         with:
           compose-file: ./docker-compose.yml
         run: |
