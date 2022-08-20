@@ -56,5 +56,5 @@ jobs:
           password: ${{ secrets.TEST }}
       - name: Docker run
         run: |
-          docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q) && docker rmi $(docker images -q)
-          docker run -d -p 6464:6464 --name test --restart always ${{ env.DOCKER_IMAGE }}:latest
+          docker stop test && docker rm test && docker rmi ${{ env.DOCKER_IMAGE }}:latest
+          docker run -d -p 6464:6464 --link db:localhost --name test --restart always ${{ env.DOCKER_IMAGE }}:latest
