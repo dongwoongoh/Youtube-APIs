@@ -13,6 +13,7 @@ ENV DATABASE_URL=mysql://root:12345@db:3306/prisma
 
 RUN npm i -g prisma
 RUN prisma generate
+RUN echo 'hello!'
 RUN npm run build
 
 CMD ["npm", "run", "start:prod"]
