@@ -58,3 +58,5 @@ jobs:
         run: |
           docker stop test && docker rm test && docker rmi ${{ env.DOCKER_IMAGE }}:latest
           docker run -itd -p 6464:6464 --network labs --name test --restart always ${{ env.DOCKER_IMAGE }}:latest
+          docker exec -it test sh
+          echo 'hello world!'
