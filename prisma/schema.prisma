@@ -13,9 +13,10 @@ datasource db {
 model User {
   id    Int     @default(autoincrement()) @id
   email String  @unique
-  name  String?
-  posts Post[]
+  phone String @unique
+  cash Int?
   isAlarm Boolean @default(false)
+  posts Post[]
 }
 
 model Post {
