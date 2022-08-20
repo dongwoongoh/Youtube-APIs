@@ -57,4 +57,4 @@ jobs:
       - name: Docker run
         run: |
           docker stop test && docker rm test && docker rmi ${{ env.DOCKER_IMAGE }}:latest
-          docker run -d -p 6464:6464 --link db --name test --restart always ${{ env.DOCKER_IMAGE }}:latest
+          docker run -d -p 6464:6464 --network test --name test --restart always ${{ env.DOCKER_IMAGE }}:latest
