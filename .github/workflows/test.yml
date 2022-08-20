@@ -58,4 +58,4 @@ jobs:
         run: |
           docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q) && docker rmi $(docker images -q)
           docker run -itd --name db --net=host --restart=always -p 3306:3306 -e MYSQL_ROOT_PASSWORD=12345 -e TZ=Asia/Seoul mysql:5.7 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-          docker run -itd --name test --net=host -p 6464:6464 -e SERVER_PORT=6464 -e DATABASE_URL=mysql://root:12345@localhost:3306/prisma --restart=always ${{ env.DOCKER_IMAGE }}:latest
+          docker run -itd --name test --net=host -p 6464:6464 ${{ env.DOCKER_IMAGE }}:latest
