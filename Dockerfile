@@ -5,6 +5,7 @@ WORKDIR /app/server
 COPY package*.json ./
 COPY prisma ./prisma/
 
+RUN npm install -g dotenv-cli
 RUN npm i -g prisma
 RUN npm ci
 
