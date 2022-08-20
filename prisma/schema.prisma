@@ -15,8 +15,10 @@ model User {
   email String  @unique
   phone String @unique
   cash Int?
+  point Int?
   isAlarm Boolean @default(false)
   posts Post[]
+  avatar String?
 }
 
 model Post {
