@@ -11,6 +11,7 @@ RUN npm ci
 
 COPY ./ ./
 
+ENV CI=true
 RUN npm run test:e2e
 
 ENV SERVER_PORT=6464
