@@ -57,5 +57,4 @@ jobs:
       - name: Docker run
         run: |
           docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q) && docker rmi $(docker images -q)
-          docker run -d -e SERVER_PORT=6464 -e DATABASE_URL=mysql://root:12345@localhost:3306/prisma \ 
-          -p 6464:6464 -e SERVER_PORT=6464 --name test --restart always ${{ env.DOCKER_IMAGE }}:latest
+          docker run -d -e SERVER_PORT=6464 -e DATABASE_URL=mysql://root:12345@localhost:3306/prisma -p 6464:6464 -e SERVER_PORT=6464 --name test --restart always ${{ env.DOCKER_IMAGE }}:latest
