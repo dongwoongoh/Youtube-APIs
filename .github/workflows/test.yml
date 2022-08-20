@@ -57,4 +57,6 @@ jobs:
       - name: Docker run
         run: |
           docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q) && docker rmi $(docker images -q)
-          docker run -d -p 6464:6464 -e SERVER_PORT=6464 --name test --restart always ${{ env.DOCKER_IMAGE }}:latest
+          docker-compose up -d --build
+
+#          docker run -d -p 6464:6464 -e SERVER_PORT=6464 --name test --restart always ${{ env.DOCKER_IMAGE }}:latest
