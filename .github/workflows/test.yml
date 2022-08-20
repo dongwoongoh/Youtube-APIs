@@ -55,6 +55,11 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.TEST }}
       - name: Docker run
+        uses: isbang/compose-action@v1.1.0
+        with:
+          compose-file: ./docker-compose.yml
         run: |
           docker stop test && docker rm test && docker rmi ${{ env.DOCKER_IMAGE }}:latest
-          docker run -itd -e SERVER_PORT=6464 -e DATABASE_URL=mysql://root:12345@3.37.130.205:3306/prisma -p 6464:6464 --name test --restart=always ${{ env.DOCKER_IMAGE }}:latest
+          docker-compose up -d --build
+
+#          docker run -itd -e SERVER_PORT=6464 -e DATABASE_URL=mysql://root:12345@3.37.130.205:3306/prisma -p 6464:6464 --name test --restart=always ${{ env.DOCKER_IMAGE }}:latest
