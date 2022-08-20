@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `User` ADD COLUMN `isAlarm` BOOLEAN NOT NULL DEFAULT false;
