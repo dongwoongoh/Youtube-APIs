@@ -4,16 +4,15 @@ WORKDIR /app/server
 
 COPY package*.json ./
 
-RUN npm install
+RUN npm i -g prisma
+RUN npm ci
 
 COPY ./ ./
 
 ENV SERVER_PORT=6464
 ENV DATABASE_URL=mysql://root:12345@db:3306/prisma
 
-RUN npm i -g prisma
 RUN prisma generate
-RUN dotenv -e .env.production -- npx prisma migrate deploy
 RUN npm run build
 
 CMD ["npm", "run", "start:prod"]
