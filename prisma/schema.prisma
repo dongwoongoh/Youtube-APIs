@@ -19,6 +19,7 @@ model User {
   isAlarm Boolean @default(false)
   posts Post[]
   avatar String?
+  rating String?
 }
 
 model Post {
