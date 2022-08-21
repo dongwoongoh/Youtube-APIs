@@ -7,9 +7,10 @@ import {
 import { PrismaService } from '../prisma.service';
 import { AuthLoginInputDto, AuthLoginOutputDto } from './dtos/auth.login.dto';
 import { TokenService } from '../token/token.service';
+import { AuthInterface } from './interfaces/auth.interface';
 
 @Injectable()
-export class AuthService {
+export class AuthService implements AuthInterface {
   constructor(
     private readonly prisma: PrismaService,
     private readonly tokenService: TokenService,
