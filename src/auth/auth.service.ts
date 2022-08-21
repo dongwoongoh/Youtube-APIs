@@ -57,4 +57,18 @@ export class AuthService implements AuthInterface {
       refreshToken,
     };
   }
+
+  public async logout(id: number) {
+    try {
+      await this.prisma.user.update({
+        where: { id },
+        data: { refreshToken: null },
+      });
+      return {
+        logout: true,
+      };
+    } catch (e) {
+      throw new InternalServerErrorException(e);
+    }
+  }
 }

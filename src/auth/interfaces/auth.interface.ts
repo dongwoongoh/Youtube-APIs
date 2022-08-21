@@ -6,4 +6,5 @@ export interface AuthInterface {
   ) => Promise<AuthLoginOutputDto>;
 
   readonly reCreateTokens: (user: any) => any;
+  readonly logout: (id: number) => Promise<{ logout: boolean }>;
 }

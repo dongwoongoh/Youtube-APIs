@@ -29,4 +29,10 @@ export class AuthController {
   private async reCreateTokens(@User() user) {
     return await this.authService.reCreateTokens(user);
   }
+
+  @UseGuards(JwtRefreshGuard)
+  @Post('logout')
+  private async logout(@User() user) {
+    return await this.authService.logout(user['id']);
+  }
 }
