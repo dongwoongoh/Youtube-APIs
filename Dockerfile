@@ -11,8 +11,6 @@ RUN npm ci
 
 COPY ./ ./
 
-ENV DATABASE_URL=mysql://root:12345@db:3306/prisma
-
 RUN prisma generate
 RUN npm run build
 
