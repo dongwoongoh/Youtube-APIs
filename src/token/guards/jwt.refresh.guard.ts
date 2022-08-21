@@ -4,13 +4,9 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { PrismaService } from '../../prisma.service';
 
 @Injectable()
 export class JwtRefreshGuard extends AuthGuard('refresh-token') {
-  constructor(private readonly prisma: PrismaService) {
-    super();
-  }
   canActivate(context: ExecutionContext) {
     return super.canActivate(context);
   }

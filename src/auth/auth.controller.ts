@@ -25,7 +25,7 @@ export class AuthController {
   }
 
   @UseGuards(JwtRefreshGuard)
-  @Get('refresh')
+  @Post('refresh')
   private async reCreateTokens(@User() user) {
     return await this.authService.reCreateTokens(user);
   }
