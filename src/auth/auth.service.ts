@@ -16,7 +16,7 @@ export class AuthService implements AuthInterface {
     private readonly tokenService: TokenService,
   ) {}
 
-  async login({
+  public async login({
     email,
     password,
   }: AuthLoginInputDto): Promise<AuthLoginOutputDto> {
@@ -30,6 +30,10 @@ export class AuthService implements AuthInterface {
           { id, email },
           { id, email, phone },
         );
+      await this.prisma.user.update({
+        where: { email },
+        data: { refreshToken },
+      });
       return {
         accessToken,
         refreshToken,
@@ -37,5 +41,20 @@ export class AuthService implements AuthInterface {
     } catch (e) {
       throw new InternalServerErrorException(e);
     }
+  }
+
+  public async reCreateTokens(user: any) {
+    const { accessToken, refreshToken } = await this.tokenService.createTokens(
+      { id: user['id'], email: user['email'] },
+      { id: user['id'], email: user['email'], phone: user['phone'] },
+    );
+    await this.prisma.user.update({
+      where: { id: user['id'] },
+      data: { refreshToken },
+    });
+    return {
+      accessToken,
+      refreshToken,
+    };
   }
 }

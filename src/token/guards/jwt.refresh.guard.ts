@@ -7,7 +7,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { PrismaService } from '../../prisma.service';
 
 @Injectable()
-export class JwtAccessGuard extends AuthGuard('access-token') {
+export class JwtRefreshGuard extends AuthGuard('refresh-token') {
   constructor(private readonly prisma: PrismaService) {
     super();
   }
