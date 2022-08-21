@@ -21,6 +21,7 @@ model User {
   posts Post[]
   avatar String?
   rating String?
+  refreshToken String? @db.Text
 }
 
 model Post {
