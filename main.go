@@ -2,26 +2,23 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
 	"time"
 )
 
-func countNumbers() {
-	for i := 1; i <= 5; i++ {
-		fmt.Println("Count:", i)
-		time.Sleep(1 * time.Second)
-	}
-}
-
-func printLetters() {
-	for char := 'a'; char <= 'e'; char++ {
-		fmt.Printf("Letter: %c\n", char)
-		time.Sleep(1 * time.Second)
-	}
-}
-
 func main() {
-	go countNumbers()
-	go printLetters()
-	time.Sleep(3 * time.Second)
-}
+	rand.Seed(time.Now().UnixNano())
+	ch := make(chan int)
+	for i := 0; i < 10; i++ {
+		go func() {
+			n := rand.Intn(100)
+			ch <- n
+		}()
+	}
+	sum := 0
+	for i := 0; i < 10; i++ {
+		sum += <-ch
+	}
 
+	fmt.Println("Sum:", sum)
+}
