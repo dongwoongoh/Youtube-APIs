@@ -2,32 +2,43 @@ package main
 
 import (
 	"fmt"
-	"math/rand"
+	"sync"
 	"time"
 )
 
+var (
+	counter int
+	mutex   sync.Mutex
+)
+
 func main() {
-	rand.Seed(time.Now().UnixNano())
-
-	ch := make(chan int)
-
 	start := time.Now()
 
-	for i := 0; i < 10; i++ {
-		go func() {
-			n := rand.Intn(100)
-			ch <- n
-		}()
-	}
+	var wg sync.WaitGroup
+	wg.Add(2)
 
-	sum := 0
-	for i := 0; i < 10; i++ {
-		sum += <-ch
-	}
+	go func() {
+		defer wg.Done()
 
-	end := time.Now()
-	elapsed := end.Sub(start)
+		for i := 0; i < 1000000; i++ {
+			mutex.Lock()
+			counter++
+			mutex.Unlock()
+		}
+	}()
 
-	fmt.Println("Sum:", sum)
-	fmt.Println("Elapsed time:", elapsed)
+	go func() {
+		defer wg.Done()
+
+		for i := 0; i < 1000000; i++ {
+			mutex.Lock()
+			counter++
+			mutex.Unlock()
+		}
+	}()
+
+	wg.Wait()
+
+	fmt.Println("Counter:", counter)
+	fmt.Println("Elapsed time:", time.Since(start))
 }
