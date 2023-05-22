@@ -2,33 +2,22 @@ package main
 
 import "fmt"
 
-type node struct {
-    value int
-    next  *node
-}
-
-type linkedList struct {
-    head *node
-}
-
-func (list *linkedList) add(value int) {
-    newNode := &node{value: value, next: list.head}
-    list.head = newNode
-}
-
-func (list *linkedList) print() {
-    currNode := list.head
-    for currNode != nil {
-        fmt.Printf("%d ", currNode.value)
-        currNode = currNode.next
-    }
-    fmt.Println()
-}
-
 func main() {
-    list := linkedList{}
-    list.add(3)
-    list.add(7)
-    list.add(10)
-    list.print()
+	var n, k int
+	fmt.Scanf("%d %d\n", &n, &k)
+
+	a := make([]int, n)
+	for i := 0; i < n; i++ {
+		fmt.Scanf("%d\n", &a[i])
+	}
+
+	var cnt int = 0
+	for i := n - 1; i >= 0; i-- {
+		cnt += k / a[i]
+		k %= a[i]
+		if k == 0 {
+			break
+		}
+	}
+	fmt.Println(cnt)
 }
