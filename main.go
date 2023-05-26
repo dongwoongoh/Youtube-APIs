@@ -5,8 +5,9 @@ import (
 )
 
 type Pair struct {
-	total int
-	songs []Song
+	genreName string
+	total     int
+	songs     []Song
 }
 
 type Song struct {
@@ -15,7 +16,7 @@ type Song struct {
 }
 
 func solution(genres []string, plays []int) []int {
-	genreToSongs := make(map[string]Pair)
+	genreToSongs := make(map[string]*Pair)
 
 	for i := 0; i < len(genres); i++ {
 		genre := genres[i]
@@ -26,7 +27,7 @@ func solution(genres []string, plays []int) []int {
 			pair.total += play
 			pair.songs = append(pair.songs, Song{i, play})
 		} else {
-			genreToSongs[genre] = Pair{play, []Song{{i, play}}}
+			genreToSongs[genre] = &Pair{genre, play, []Song{{i, play}}}
 		}
 	}
 
@@ -39,7 +40,7 @@ func solution(genres []string, plays []int) []int {
 		})
 	}
 
-	genresSorted := make([]Pair, 0, len(genreToSongs))
+	genresSorted := make([]*Pair, 0, len(genreToSongs))
 	for _, value := range genreToSongs {
 		genresSorted = append(genresSorted, value)
 	}
