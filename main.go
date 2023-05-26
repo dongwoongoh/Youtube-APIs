@@ -1,61 +1,95 @@
 package main
 
 import (
-	"sort"
+	"container/heap"
+	"fmt"
+	"math"
 )
 
-type Truck struct {
-	g, s, w, t, tot int64
+type City struct {
+	totalTime, maxWeight, leftGold, leftSilver, idx int
 }
 
-func check(trucks []Truck, target, a, b int64) bool {
-	gold, silver, both := int64(0), int64(0), int64(0)
+type MinHeap []*City
 
-	for _, truck := range trucks {
-		capacity := (target / (truck.t * 2)) * truck.w
-		if target >= truck.t {
-			capacity += truck.w
-		}
-		g := min(capacity, truck.g)
-		capacity -= g
-		s := min(capacity, truck.s)
-		gold += g
-		silver += s
-		both += min(g+s, truck.tot)
-	}
-
-	if gold >= a && silver >= b {
-		return true
-	}
-	return both >= a+b
+func (h MinHeap) Len() int {
+	return len(h)
+}
+func (h MinHeap) Less(i, j int) bool {
+	return h[i].totalTime < h[j].totalTime
+}
+func (h MinHeap) Swap(i, j int) {
+	h[i], h[j] = h[j], h[i]
+	h[i].idx, h[j].idx = i, j
 }
 
-func min(x, y int64) int64 {
-	if x < y {
-		return x
-	}
-	return y
+func (h *MinHeap) Push(x interface{}) {
+	n := len(*h)
+	city := x.(*City)
+	city.idx = n
+	*h = append(*h, city)
 }
 
-func solution(a int, b int, g []int, s []int, w []int, t []int) int64 {
-	trucks := []Truck{}
+func (h *MinHeap) Pop() interface{} {
+	old := *h
+	n := len(old)
+	city := old[n-1]
+	old[n-1] = nil
+	city.idx = -1
+	*h = old[0 : n-1]
+	return city
+}
+
+func solution(a int, b int, g []int, s []int, w []int, t []int) int {
+	h := &MinHeap{}
+	heap.Init(h)
+	totalGold, totalSilver := 0, 0
+	minTime := 0
 	for i := 0; i < len(g); i++ {
-		trucks = append(trucks, Truck{int64(g[i]), int64(s[i]), int64(w[i]), int64(t[i]), int64(g[i] + s[i])})
-	}
-
-	sort.Slice(trucks, func(i, j int) bool {
-		return trucks[i].t < trucks[j].t
-	})
-
-	left, right := int64(0), int64(1e18)
-	for left < right {
-		mid := (left + right) / 2
-		if check(trucks, mid, int64(a), int64(b)) {
-			right = mid
-		} else {
-			left = mid + 1
+		totalGold += g[i]
+		totalSilver += s[i]
+		city := &City{
+			totalTime: 2 * t[i],
+			maxWeight: w[i],
+			leftGold:  g[i],
+			leftSilver: s[i],
+			idx:       i,
 		}
+		if city.totalTime < 0 {
+			minTime = city.totalTime
+		}
+		heap.Push(h, city)
 	}
+	needGold, needSilver := a, b
+	for needGold > 0 || needSilver > 0 {
+		city := heap.Pop(h).(*City)
+		if city.totalTime < minTime {
+			minTime = city.totalTime
+		}
+		amount := min(min(city.leftGold+city.leftSilver, city.maxWeight), needGold+needSilver)
+		if amount > city.leftGold {
+			city.leftSilver -= amount - city.leftGold
+			needSilver -= amount - city.leftGold
+			needGold -= city.leftGold
+			city.leftGold = 0
+		} else {
+			city.leftGold -= amount
+			needGold -= amount
+		}
+		city.totalTime += 2 * city.totalTime
+		heap.Push(h, city)
+	}
+	return -minTime
+}
 
-	return right
+func min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
+}
+
+func main() {
+	fmt.Println(solution(10, 10, []int{100}, []int{100}, []int{7}, []int{10}))
+	fmt.Println(solution(90, 500, []int{70, 70, 0}, []int{0, 0, 500}, []int{100, 100, 2}, []int{4, 8, 1}))
 }
